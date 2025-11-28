@@ -4,6 +4,12 @@ const GROQ_API_URL = "/api/groq/openai/v1/chat/completions";
 const part1 = import.meta.env.VITE_GROQ_API_KEY_PART1;
 const part2 = import.meta.env.VITE_GROQ_API_KEY_PART2;
 const fullKey = import.meta.env.VITE_GROQ_API_KEY;
+console.log("DEBUG: Env Vars", { 
+  hasPart1: !!part1, 
+  hasPart2: !!part2, 
+  hasFull: !!fullKey,
+  mode: import.meta.env.MODE 
+});
 const GROQ_API_KEY = (part1 && part2) ? (part1 + part2) : (fullKey || '');
 
 const checkKey = () => {
