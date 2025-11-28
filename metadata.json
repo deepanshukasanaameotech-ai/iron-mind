@@ -1,0 +1,7 @@
+{
+  "name": "IRON MIND",
+  "description": "A hyper-minimal, discipline-focused tracking application inspired by David Goggins. Tracks battle logs, habits, life pillars, physical performance, and deep work with brutal AI accountability.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
