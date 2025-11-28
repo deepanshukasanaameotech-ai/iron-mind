@@ -76,7 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string) => {
     // Magic Link Login
-    const redirectUrl = window.location.origin + import.meta.env.BASE_URL;
+    const redirectUrl = window.location.origin;
     const { error } = await supabase.auth.signInWithOtp({ 
         email,
         options: {
@@ -100,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // However, to strictly "not send link" if exists, we might need to rely on the fact that 
       // if they exist, signUp might return a specific response or we should just use signIn.
       
-      const redirectUrl = window.location.origin + import.meta.env.BASE_URL;
+      const redirectUrl = window.location.origin;
       const { data, error } = await supabase.auth.signUp({ 
         email, 
         password,
@@ -125,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithGoogle = async () => {
-    const redirectUrl = window.location.origin + import.meta.env.BASE_URL;
+    const redirectUrl = window.location.origin;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
