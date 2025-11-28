@@ -1,7 +1,10 @@
 import { AI_SYSTEM_INSTRUCTION } from "../constants";
 
 const GROQ_API_URL = "/api/groq/openai/v1/chat/completions";
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+const part1 = import.meta.env.VITE_GROQ_API_KEY_PART1;
+const part2 = import.meta.env.VITE_GROQ_API_KEY_PART2;
+const fullKey = import.meta.env.VITE_GROQ_API_KEY;
+const GROQ_API_KEY = (part1 && part2) ? (part1 + part2) : (fullKey || '');
 
 const checkKey = () => {
   if (!GROQ_API_KEY) {

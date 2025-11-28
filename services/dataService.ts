@@ -29,7 +29,7 @@ export const getUser = async (): Promise<User | null> => {
       .from('profiles')
       .select('*')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     if (error) {
         console.error("Error fetching profile:", error);
@@ -77,7 +77,7 @@ export const getBattleLog = async (): Promise<BattleLog> => {
     .select('data')
     .eq('user_id', uid)
     .eq('date', today)
-    .single();
+    .maybeSingle();
 
   if (data) {
     return data.data as BattleLog;
@@ -132,7 +132,7 @@ export const getHabits = async (): Promise<Habit[]> => {
     .select('data')
     .eq('user_id', uid)
     .eq('key', 'habits')
-    .single();
+    .maybeSingle();
 
   if (data) {
     return data.data as Habit[];
@@ -159,7 +159,7 @@ export const getPillars = async (): Promise<PillarData[]> => {
     .select('data')
     .eq('user_id', uid)
     .eq('key', 'pillars')
-    .single();
+    .maybeSingle();
 
   if (data) {
     return data.data as PillarData[];
@@ -186,7 +186,7 @@ export const getIdentity = async (): Promise<IdentityData> => {
     .select('data')
     .eq('user_id', uid)
     .eq('key', 'identity')
-    .single();
+    .maybeSingle();
 
   if (data) {
     return data.data as IdentityData;

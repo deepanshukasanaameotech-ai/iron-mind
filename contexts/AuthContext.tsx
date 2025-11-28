@@ -76,7 +76,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string) => {
     // Magic Link Login
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const redirectUrl = window.location.origin + import.meta.env.BASE_URL;
+    const { error } = await supabase.auth.signInWithOtp({ 
+        email,
+        options: {
+            emailRedirectTo: redirectUrl
+        }
+    });
     if (error) throw error;
     alert("Check your email for the login link!");
   };
@@ -94,26 +100,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // However, to strictly "not send link" if exists, we might need to rely on the fact that 
       // if they exist, signUp might return a specific response or we should just use signIn.
       
+      const redirectUrl = window.location.origin + import.meta.env.BASE_URL;
       const { data, error } = await supabase.auth.signUp({ 
         email, 
         password,
         options: {
-          emailRedirectTo: window.location.origin
+          emailRedirectTo: redirectUrl
         }
       });
       
-      if (error) throw error;
+      if (error) {
+          if (error.message.includes("already registered") || error.status === 400) {
+              throw new Error("User already exists. Please login.");
+          }
+          throw error;
+      }
       
-      // If data.user is null or data.session is null but no error, it might mean confirmation sent.
-      // If user is already registered, Supabase might return a fake success or an error depending on config.
-      // But usually, if they are already confirmed, it might return the user?
-      // Actually, if they are already registered, `signUp` returns the user but session is null (if confirm needed)
-      // or returns user + session (if auto-confirm).
-      // If they are registered, we want to tell them.
-      
+      // If data.user is defined but identities is empty, it means the user exists (Supabase security feature)
       if (data.user && data.user.identities && data.user.identities.length === 0) {
-          // This often indicates the user already exists (auth.users) but this identity (email) is taken?
-          // Or simply, if identities is empty array, it means user exists.
           throw new Error("User already exists. Please login.");
       }
 
@@ -121,10 +125,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithGoogle = async () => {
+    const redirectUrl = window.location.origin + import.meta.env.BASE_URL;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin // Redirect back to app
+        redirectTo: redirectUrl
       }
     });
     if (error) throw error;
@@ -144,6 +149,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const sendVerification = async () => {
+    // Supabase handles this automatically on signup usually.
+    // But we can resend if needed?
+    // supabase.auth.resend({ type: 'signup', email: user.email })
     if (user?.email) {
         await supabase.auth.resend({ type: 'signup', email: user.email });
         alert("Verification email resent!");

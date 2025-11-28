@@ -45,7 +45,7 @@ export const Auth: React.FC = () => {
       <Card className="w-full max-w-md bg-neutral-950 border-neutral-800">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-black italic text-white mb-2">IRON<span className="text-emerald-500">MIND</span>.</h1>
-          <p className="text-xs font-mono text-neutral-500 uppercase">Secure Access Terminal</p>
+          
         </div>
 
         {error && (
@@ -112,9 +112,7 @@ export const Auth: React.FC = () => {
           </button>
         </div>
 
-        <p className="text-[10px] text-neutral-600 text-center mt-6">
-          SECURE CONNECTION ENCRYPTED (TLS 1.3). NO UNAUTHORIZED ACCESS.
-        </p>
+        
       </Card>
     </div>
   );

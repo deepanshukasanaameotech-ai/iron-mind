@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Habits } from './pages/Habits';
@@ -14,23 +13,22 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
 
 function AppContent() {
-  const { user, logout, upgrade, loading } = useAuth();
+  const [screen, setScreen] = useState<Screen>('DASHBOARD');
   const [showPaywall, setShowPaywall] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { user, logout, upgrade, loading } = useAuth();
 
   // Redirect to Auth if not logged in
   useEffect(() => {
-    if (!loading && !user && location.pathname !== '/auth') {
-      navigate('/auth');
-    } else if (user && location.pathname === '/auth') {
-      navigate('/');
+    if (!loading && !user) {
+      setScreen('AUTH');
+    } else if (user && screen === 'AUTH') {
+      setScreen('DASHBOARD');
     }
-  }, [user, loading, location.pathname, navigate]);
+  }, [user, loading, screen]);
 
   const handleLogout = async () => {
     await logout();
-    navigate('/auth');
+    setScreen('AUTH');
   };
 
   const handleUpgrade = async () => {
@@ -44,35 +42,9 @@ function AppContent() {
     return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading Iron Mind...</div>;
   }
 
-  // Paywall Modal Overlay
-  const Paywall = () => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
-      <div className="bg-neutral-900 border border-emerald-500 max-w-lg w-full p-8 text-center relative">
-        <button onClick={() => setShowPaywall(false)} className="absolute top-4 right-4 text-neutral-500 hover:text-white">✕</button>
-        <h2 className="text-3xl font-black italic text-white mb-2">GO <span className="text-emerald-500">PRO</span></h2>
-        <p className="text-neutral-400 font-mono text-sm mb-6">UNLOCK UNLIMITED POTENTIAL. NO LIMITS.</p>
-        <ul className="text-left text-sm space-y-2 mb-8 text-neutral-300 font-mono mx-auto max-w-xs">
-          <li>✓ Unlimited Habits</li>
-          <li>✓ Deep Analytics</li>
-          <li>✓ Cloud Sync</li>
-          <li>✓ Full AI Coaching</li>
-        </ul>
-        <Button onClick={handleUpgrade} className="w-full">Upgrade - $9.99/mo</Button>
-        <div className="flex justify-center gap-4 mt-4 opacity-50">
-          <span className="text-[10px] text-white">STRIPE</span>
-          <span className="text-[10px] text-white">SSL SECURE</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  if (!user && location.pathname === '/auth') {
-      return <Auth />;
+  if (!user) {
+    return <Auth />;
   }
-  
-  // If user is not logged in and we are not on auth page, the useEffect will redirect.
-  // But while redirecting, we might want to return null or loader.
-  if (!user) return null;
 
   if (!user.emailVerified) {
     return (
@@ -98,50 +70,40 @@ function AppContent() {
     );
   }
 
-  // Map current path to Screen type for Layout highlighting (optional, or refactor Layout)
-  // Let's refactor Layout to use location or just pass the current screen based on route.
-  // Actually, Layout expects `currentScreen`. We can derive it.
-  const getScreenFromPath = (path: string): Screen => {
-      switch(path) {
-          case '/': return 'DASHBOARD';
-          case '/habits': return 'HABITS';
-          case '/pillars': return 'PILLARS';
-          case '/identity': return 'IDENTITY';
-          case '/performance': return 'PERFORMANCE';
-          case '/focus': return 'FOCUS';
-          default: return 'DASHBOARD';
-      }
-  };
-
-  const currentScreen = getScreenFromPath(location.pathname);
+  // Paywall Modal Overlay
+  const Paywall = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+      <div className="bg-neutral-900 border border-emerald-500 max-w-lg w-full p-8 text-center relative">
+        <button onClick={() => setShowPaywall(false)} className="absolute top-4 right-4 text-neutral-500 hover:text-white">✕</button>
+        <h2 className="text-3xl font-black italic text-white mb-2">GO <span className="text-emerald-500">PRO</span></h2>
+        <p className="text-neutral-400 font-mono text-sm mb-6">UNLOCK UNLIMITED POTENTIAL. NO LIMITS.</p>
+        <ul className="text-left text-sm space-y-2 mb-8 text-neutral-300 font-mono mx-auto max-w-xs">
+          <li>✓ Unlimited Habits</li>
+          <li>✓ Deep Analytics</li>
+          <li>✓ Cloud Sync</li>
+          <li>✓ Full AI Coaching</li>
+        </ul>
+        <Button onClick={handleUpgrade} className="w-full">Upgrade - $9.99/mo</Button>
+        <div className="flex justify-center gap-4 mt-4 opacity-50">
+          <span className="text-[10px] text-white">STRIPE</span>
+          <span className="text-[10px] text-white">SSL SECURE</span>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
-      <Layout currentScreen={currentScreen} setScreen={(s) => {
-          // Adapter to navigate
-          const pathMap: Record<Screen, string> = {
-              'DASHBOARD': '/',
-              'HABITS': '/habits',
-              'PILLARS': '/pillars',
-              'IDENTITY': '/identity',
-              'PERFORMANCE': '/performance',
-              'FOCUS': '/focus',
-              'AUTH': '/auth'
-          };
-          navigate(pathMap[s]);
-      }} user={user} onLogout={handleLogout}>
-        <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/habits" element={<Habits />} />
-            <Route path="/pillars" element={<Pillars />} />
-            <Route path="/identity" element={<Identity />} />
-            <Route path="/performance" element={<Performance />} />
-            <Route path="/focus" element={<Focus />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+      <Layout currentScreen={screen} setScreen={setScreen} user={user} onLogout={handleLogout}>
+        {screen === 'DASHBOARD' && <Dashboard />}
+        {screen === 'HABITS' && <Habits />}
+        {screen === 'PILLARS' && <Pillars />}
+        {screen === 'IDENTITY' && <Identity />}
+        {screen === 'PERFORMANCE' && <Performance />}
+        {screen === 'FOCUS' && <Focus />}
         
         {/* Simple Pro Trigger for Demo */}
-        {!user?.isPro && (
+        {!user?.isPro && screen !== 'AUTH' && (
           <div className="mt-12 border-t border-neutral-800 pt-6 text-center">
             <p className="text-xs text-neutral-500 mb-2">RUNNING ON FREE TIER.</p>
             <button onClick={() => setShowPaywall(true)} className="text-emerald-500 text-xs font-bold uppercase underline">
