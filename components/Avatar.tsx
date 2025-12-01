@@ -9,7 +9,7 @@ interface AvatarProps {
 
 export const Avatar: React.FC<AvatarProps> = ({ isTalking }) => {
   // Load Ready Player Me model (Bald, Athletic Male)
-  const { scene } = useGLTF('https://models.readyplayer.me/64b72b33f324535355c49626.glb');
+  const { scene } = useGLTF('https://models.readyplayer.me/6185a4acfb622cf1cdc49348.glb');
   const avatarRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Object3D | null>(null);
 
@@ -59,4 +59,4 @@ export const Avatar: React.FC<AvatarProps> = ({ isTalking }) => {
 };
 
 // Preload the model
-useGLTF.preload('https://models.readyplayer.me/64b72b33f324535355c49626.glb');
+useGLTF.preload('https://models.readyplayer.me/6185a4acfb622cf1cdc49348.glb');

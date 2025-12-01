@@ -3,9 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
 import { Avatar } from '../components/Avatar';
 import { chatWithGoggins } from '../services/aiService';
-
-import { speakWithPiper, initPiper } from '../services/piperService';
-import { Send, Mic, MicOff, Volume2, VolumeX, Download } from 'lucide-react';
+import { Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 
 const ChatYourDevils: React.FC = () => {
   const [input, setInput] = useState('');
@@ -15,40 +13,11 @@ const ChatYourDevils: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-
-  const [downloadProgress, setDownloadProgress] = useState(0);
-  const [isModelReady, setIsModelReady] = useState(false);
   const synth = window.speechSynthesis;
-
-  useEffect(() => {
-    // Initialize Piper on mount
-    initPiper((progress) => {
-      setDownloadProgress(progress);
-      if (progress >= 100) setIsModelReady(true);
-    }).then(() => setIsModelReady(true))
-      .catch(err => console.error("Piper init failed:", err));
-  }, []);
 
   const speak = async (text: string) => {
     if (isMuted) return;
     
-    // Try Piper TTS first
-    if (isModelReady) {
-      try {
-        const audioUrl = await speakWithPiper(text);
-        const audio = new Audio(audioUrl);
-        
-        audio.onplay = () => setIsTalking(true);
-        audio.onended = () => setIsTalking(false);
-        audio.onerror = () => setIsTalking(false);
-        
-        await audio.play();
-        return;
-      } catch (err) {
-        console.error("Piper TTS failed, falling back to browser TTS:", err);
-      }
-    }
-
     // Fallback to Browser TTS
     synth.cancel();
 
@@ -107,12 +76,6 @@ const ChatYourDevils: React.FC = () => {
 
         {/* Overlay Controls */}
         <div className="absolute top-4 right-4 z-10 flex gap-2 items-center">
-          {!isModelReady && (
-            <div className="bg-black/50 px-3 py-1 rounded-full text-xs text-blue-400 flex items-center gap-2">
-              <Download size={12} />
-              {downloadProgress > 0 ? `${Math.round(downloadProgress)}%` : 'Loading Voice...'}
-            </div>
-          )}
           <button 
             onClick={() => setIsMuted(!isMuted)}
             className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors"
