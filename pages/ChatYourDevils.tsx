@@ -15,8 +15,9 @@ const ChatYourDevils: React.FC = () => {
   const [isTalking, setIsTalking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [fishApiKey, setFishApiKey] = useState(localStorage.getItem('fish_api_key') || '');
-  const [fishRefId, setFishRefId] = useState(localStorage.getItem('fish_ref_id') || '');
+  // Hardcoded defaults from user request for immediate functionality
+  const [fishApiKey, setFishApiKey] = useState(localStorage.getItem('fish_api_key') || '5d1eb14dda1846419fd1f38300616468');
+  const [fishRefId, setFishRefId] = useState(localStorage.getItem('fish_ref_id') || 'ff5468d06c2443dba9b8d2f9c6aa26b0');
   const synth = window.speechSynthesis;
 
   const saveSettings = () => {
