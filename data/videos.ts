@@ -7,17 +7,17 @@ export interface Video {
 
 export const videos: Video[] = [
   {
-    id: 'ShortsID1', // User to replace with real ID
+    id: 'H5XpcvfCP9g', // User to replace with real ID
     title: "Stay Hard - David Goggins",
     category: 'Goggins'
   },
   {
-    id: 'ShortsID2',
+    id: 'S30tE6EPWa5Q',
     title: "Discipline Equals Freedom",
     category: 'Jocko'
   },
   {
-    id: 'ShortsID3',
+    id: '7nOCjzYtzwY',
     title: "The Only Easy Day Was Yesterday",
     category: 'War Mode'
   },
