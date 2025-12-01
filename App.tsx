@@ -9,6 +9,7 @@ import { Focus } from './pages/Focus';
 import { Auth } from './pages/Auth';
 import { Wisdom } from './pages/Wisdom';
 import { Motivation } from './pages/Motivation';
+import ChatYourDevils from './pages/ChatYourDevils';
 import { Screen } from './types';
 import { Button } from './components/UIComponents';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -161,6 +162,7 @@ function AppContent() {
         {screen === 'FOCUS' && <Focus />}
         {screen === 'WISDOM' && <Wisdom />}
         {screen === 'MOTIVATION' && <Motivation />}
+        {screen === 'CHAT_DEVILS' && <ChatYourDevils />}
         
         {/* Simple Pro Trigger for Demo */}
         {!user?.isPro && screen !== 'AUTH' && (

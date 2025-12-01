@@ -80,3 +80,20 @@ export const analyzePerformance = async (data: any, type: string): Promise<strin
     return "ERROR PROCESSING METRICS.";
   }
 };
+
+export const chatWithGoggins = async (message: string): Promise<string> => {
+  if (!checkKey()) return "API KEY MISSING. CAN'T HEAR YOU.";
+
+  try {
+    const messages = [
+      { role: "system", content: "You are David Goggins. You are intense, brutal, and motivational. You don't sugarcoat anything. You yell (use CAPS often). You are a 3D avatar talking to the user. Keep responses short and punchy." },
+      { role: "user", content: message }
+    ];
+    
+    const result = await queryGroq(messages);
+    return result.choices[0]?.message?.content || "SILENCE.";
+  } catch (error) {
+    console.error("Chat Error:", error);
+    return "SYSTEM FAILURE. REBOOT.";
+  }
+};
