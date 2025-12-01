@@ -35,12 +35,7 @@ function AppContent() {
     setScreen('AUTH');
   };
 
-  const handleUpgrade = async () => {
-    // Simulate secure payment gateway
-    alert("Simulating Stripe Checkout...");
-    await upgrade();
-    setShowPaywall(false);
-  };
+
 
   if (loading) {
     return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading Iron Mind...</div>;
@@ -133,8 +128,13 @@ function AppContent() {
           ) : (
             <Elements options={options} stripe={stripePromise}>
               <PaymentForm onSuccess={async () => {
-                  await upgrade();
+                  // Wait for webhook to update DB
+                  // In a real app, we would listen to realtime changes or poll
+                  // For now, we will just close the modal and let the user refresh or wait for the next session check
+                  // Ideally: Show a "Confirming..." spinner here while polling profiles table
+                  alert("Payment successful! Upgrading your account... (this may take a moment)");
                   setShowPaywall(false);
+                  window.location.reload(); // Force reload to get new claims
               }} onCancel={() => setShowPaywall(false)} />
             </Elements>
           )}
