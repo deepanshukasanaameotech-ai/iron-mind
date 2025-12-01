@@ -65,6 +65,8 @@ const SoundCard: React.FC<{ sound: Sound }> = ({ sound }) => {
     }
   }, [volume]);
 
+  const Icon = sound.icon;
+
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -86,7 +88,7 @@ const SoundCard: React.FC<{ sound: Sound }> = ({ sound }) => {
       />
       
       <div className={`p-4 rounded-full bg-neutral-950 border border-neutral-800 ${isPlaying ? 'animate-pulse ring-2 ring-emerald-500/20' : ''}`}>
-        <sound.icon size={32} className={sound.color} />
+        <Icon size={32} className={sound.color} />
       </div>
 
       <div className="text-center">

@@ -42,7 +42,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, setScre
           <NavItem screen="PILLARS" label="Life Pillars" icon="🏛️" />
           <NavItem screen="IDENTITY" label="Identity Map" icon="🆔" />
           <NavItem screen="PERFORMANCE" label="Performance" icon="📈" />
-          <NavItem screen="FOCUS" label="Deep Work" icon="⏱️" />
+          <NavItem screen="FOCUS" label="Focus" icon="⏱️" />
           <NavItem screen="WISDOM" label="Daily Wisdom" icon="📜" />
           <NavItem screen="MOTIVATION" label="Fuel Station" icon="🔥" />
           <NavItem screen="CHAT_DEVILS" label="Chat Your Devils" icon="😈" />
@@ -77,7 +77,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, setScre
              <NavItem screen="HABITS" label="Discipline Lab" icon="⛓️" />
              <NavItem screen="PILLARS" label="Life Pillars" icon="🏛️" />
              <NavItem screen="PERFORMANCE" label="Performance" icon="📈" />
-             <NavItem screen="FOCUS" label="Deep Work" icon="⏱️" />
+             <NavItem screen="FOCUS" label="Focus" icon="⏱️" />
              <NavItem screen="WISDOM" label="Daily Wisdom" icon="📜" />
              <NavItem screen="MOTIVATION" label="Fuel Station" icon="🔥" />
              <NavItem screen="CHAT_DEVILS" label="Chat Your Devils" icon="😈" />
