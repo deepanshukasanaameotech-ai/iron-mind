@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-const FISH_AUDIO_API_URL = "https://api.fish.audio/v1/tts";
+// Use Netlify Function Proxy to bypass CORS
+const FISH_AUDIO_API_URL = "/.netlify/functions/fish-proxy";
 
 export const speakWithFish = async (
   text: string, 
