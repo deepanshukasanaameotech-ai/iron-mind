@@ -1,62 +1,75 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
+import { Mesh } from 'three';
 
 interface AvatarProps {
   isTalking: boolean;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({ isTalking }) => {
-  // Load Ready Player Me model (Bald, Athletic Male)
-  const { scene } = useGLTF('https://models.readyplayer.me/6185a4acfb622cf1cdc49348.glb');
-  const avatarRef = useRef<THREE.Group>(null);
-  const headRef = useRef<THREE.Object3D | null>(null);
-
-  useEffect(() => {
-    if (scene) {
-      // Try to find the head bone for more natural movement
-      scene.traverse((child) => {
-        if (child.name === 'Head' || child.name === 'Neck') {
-          headRef.current = child;
-        }
-      });
-    }
-  }, [scene]);
+  const headRef = useRef<Mesh>(null);
+  const jawRef = useRef<Mesh>(null);
 
   useFrame((state) => {
-    if (!avatarRef.current) return;
-
     const time = state.clock.getElapsedTime();
 
-    // Idle Animation: Subtle breathing/sway
-    avatarRef.current.position.y = -1.5 + Math.sin(time * 1) * 0.02;
-    avatarRef.current.rotation.y = Math.sin(time * 0.5) * 0.05;
+    // Idle Animation
+    if (headRef.current) {
+      headRef.current.rotation.y = Math.sin(time * 0.5) * 0.1;
+      headRef.current.position.y = Math.sin(time * 1) * 0.05;
+    }
 
-    // Talking Animation: Rapid jaw/head movement
-    if (isTalking) {
-      // Shake head slightly when talking for emphasis
-      const talkIntensity = Math.sin(time * 20) * 0.05;
-      if (headRef.current) {
-        headRef.current.rotation.x = talkIntensity;
+    // Talking Animation (Jaw movement)
+    if (jawRef.current) {
+      if (isTalking) {
+        // Rapid up/down movement for talking
+        jawRef.current.position.y = -0.5 + Math.sin(time * 20) * 0.1;
       } else {
-        // Fallback if bone not found
-        avatarRef.current.rotation.x = talkIntensity;
-      }
-    } else {
-      // Reset head rotation
-      if (headRef.current) {
-        headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, 0, 0.1);
+        // Return to closed position
+        jawRef.current.position.y = -0.4;
       }
     }
   });
 
   return (
-    <group ref={avatarRef} dispose={null}>
-      <primitive object={scene} scale={2} position={[0, -2, 0]} />
+    <group>
+      {/* Head */}
+      <mesh ref={headRef} position={[0, 0, 0]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshStandardMaterial color="#8B4513" roughness={0.5} /> {/* Darker skin tone */}
+        
+        {/* Eyes */}
+        <mesh position={[-0.3, 0.2, 0.9]}>
+          <sphereGeometry args={[0.1, 16, 16]} />
+          <meshStandardMaterial color="white" />
+          <mesh position={[0, 0, 0.08]}>
+            <sphereGeometry args={[0.05, 16, 16]} />
+            <meshStandardMaterial color="black" />
+          </mesh>
+        </mesh>
+        <mesh position={[0.3, 0.2, 0.9]}>
+          <sphereGeometry args={[0.1, 16, 16]} />
+          <meshStandardMaterial color="white" />
+          <mesh position={[0, 0, 0.08]}>
+            <sphereGeometry args={[0.05, 16, 16]} />
+            <meshStandardMaterial color="black" />
+          </mesh>
+        </mesh>
+
+        {/* Jaw/Mouth */}
+        <mesh ref={jawRef} position={[0, -0.4, 0.5]} rotation={[0.2, 0, 0]}>
+          <cylinderGeometry args={[0.4, 0.3, 0.4, 32]} />
+          <meshStandardMaterial color="#8B4513" roughness={0.5} />
+        </mesh>
+      </mesh>
+
+      {/* Body/Neck */}
+      <mesh position={[0, -1.5, 0]}>
+        <cylinderGeometry args={[0.5, 1, 2, 32]} />
+        <meshStandardMaterial color="#1a1a1a" /> {/* Black shirt */}
+      </mesh>
     </group>
   );
 };
 
-// Preload the model
-useGLTF.preload('https://models.readyplayer.me/6185a4acfb622cf1cdc49348.glb');
+
