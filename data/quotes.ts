@@ -116,6 +116,150 @@ export const quotes: Quote[] = [
     author: "George Savile",
     category: "Masculinity",
     tags: ["patience", "control"]
+  },
+  {
+    id: '16',
+    text: "Discipline equals freedom.",
+    author: "Jocko Willink",
+    category: "Discipline",
+    tags: ["freedom", "leadership"]
+  },
+  {
+    id: '17',
+    text: "There is nothing outside of yourself that can ever enable you to get better, stronger, richer, quicker, or smarter. Everything is within.",
+    author: "Miyamoto Musashi",
+    source: "The Book of Five Rings",
+    category: "War",
+    tags: ["self-reliance", "mastery"]
+  },
+  {
+    id: '18',
+    text: "Compare yourself to who you were yesterday, not to who someone else is today.",
+    author: "Jordan Peterson",
+    category: "Mindset",
+    tags: ["growth", "comparison"]
+  },
+  {
+    id: '19',
+    text: "No man has the right to be an amateur in the matter of physical training.",
+    author: "Socrates",
+    category: "Fitness",
+    tags: ["duty", "strength"]
+  },
+  {
+    id: '20',
+    text: "The happiness of your life depends upon the quality of your thoughts.",
+    author: "Marcus Aurelius",
+    source: "Meditations",
+    category: "Stoicism",
+    tags: ["mindset", "happiness"]
+  },
+  {
+    id: '21',
+    text: "If you're going through hell, keep going.",
+    author: "Winston Churchill",
+    category: "War",
+    tags: ["perseverance", "resilience"]
+  },
+  {
+    id: '22',
+    text: "Don't count the days, make the days count.",
+    author: "Muhammad Ali",
+    category: "Discipline",
+    tags: ["action", "greatness"]
+  },
+  {
+    id: '23',
+    text: "A man who wants to lead the orchestra must turn his back on the crowd.",
+    author: "Max Lucado",
+    category: "Masculinity",
+    tags: ["leadership", "focus"]
+  },
+  {
+    id: '24',
+    text: "He who conquers himself is the mightiest warrior.",
+    author: "Confucius",
+    category: "War",
+    tags: ["self-control", "victory"]
+  },
+  {
+    id: '25',
+    text: "Obsession is the only thing that matters.",
+    author: "David Goggins",
+    category: "Mindset",
+    tags: ["obsession", "drive"]
+  },
+  {
+    id: '26',
+    text: "The body should be treated rigorously, that it may not be disobedient to the mind.",
+    author: "Seneca",
+    category: "Fitness",
+    tags: ["discipline", "body-mind"]
+  },
+  {
+    id: '27',
+    text: "It's not the load that breaks you down, it's the way you carry it.",
+    author: "Lou Holtz",
+    category: "Mindset",
+    tags: ["attitude", "strength"]
+  },
+  {
+    id: '28',
+    text: "Do not pray for an easy life, pray for the strength to endure a difficult one.",
+    author: "Bruce Lee",
+    category: "Stoicism",
+    tags: ["strength", "endurance"]
+  },
+  {
+    id: '29',
+    text: "A smooth sea never made a skilled sailor.",
+    author: "Franklin D. Roosevelt",
+    category: "Masculinity",
+    tags: ["adversity", "growth"]
+  },
+  {
+    id: '30',
+    text: "Your potential is one thing. What you do with it is another.",
+    author: "Unknown",
+    category: "Discipline",
+    tags: ["potential", "action"]
+  },
+  {
+    id: '31',
+    text: "Strategy without tactics is the slowest route to victory. Tactics without strategy is the noise before defeat.",
+    author: "Sun Tzu",
+    source: "The Art of War",
+    category: "War",
+    tags: ["strategy", "planning"]
+  },
+  {
+    id: '32',
+    text: "The impediment to action advances action. What stands in the way becomes the way.",
+    author: "Marcus Aurelius",
+    source: "Meditations",
+    category: "Stoicism",
+    tags: ["obstacles", "perspective"]
+  },
+  {
+    id: '33',
+    text: "Everybody wants to be a bodybuilder, but nobody wants to lift no heavy-ass weights.",
+    author: "Ronnie Coleman",
+    category: "Fitness",
+    tags: ["hard work", "reality"]
+  },
+  {
+    id: '34',
+    text: "A man should be upright, not be kept upright.",
+    author: "Marcus Aurelius",
+    category: "Masculinity",
+    tags: ["integrity", "independence"]
+  },
+  {
+    id: '35',
+    text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    author: "Winston Churchill",
+    category: "Mindset",
+    tags: ["courage", "persistence"]
   }
 ];
 
