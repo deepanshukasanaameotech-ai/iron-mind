@@ -15,10 +15,25 @@ export const Avatar: React.FC<AvatarProps> = ({ isTalking }) => {
 
   useEffect(() => {
     if (scene) {
-      // Try to find the head bone for more natural movement
+      // Traverse to find bones for posing
       scene.traverse((child) => {
-        if (child.name === 'Head' || child.name === 'Neck') {
-          headRef.current = child;
+        if (child instanceof THREE.Bone) {
+          // Map head for animation
+          if (child.name === 'Head' || child.name === 'Neck') {
+            headRef.current = child;
+          }
+          
+          // Force arms down for "Military Stance" (A-pose -> I-pose)
+          if (child.name.includes('Arm') || child.name.includes('Shoulder')) {
+            // Adjust rotation to bring arms to side
+            // Exact axis depends on model rigging, usually Z or X for arms
+            if (child.name.includes('LeftUpArm')) {
+              child.rotation.z = Math.PI / 3.5; // Rotate down
+            }
+            if (child.name.includes('RightUpArm')) {
+              child.rotation.z = -Math.PI / 3.5; // Rotate down
+            }
+          }
         }
       });
     }
@@ -29,31 +44,34 @@ export const Avatar: React.FC<AvatarProps> = ({ isTalking }) => {
 
     const time = state.clock.getElapsedTime();
 
-    // Idle Animation: Subtle breathing/sway
-    avatarRef.current.position.y = -1.5 + Math.sin(time * 1) * 0.02;
-    avatarRef.current.rotation.y = Math.sin(time * 0.5) * 0.05;
+    // Military Idle: Very stiff, minimal movement
+    // Breathing only
+    avatarRef.current.position.y = -1.6 + Math.sin(time * 0.5) * 0.005;
+    
+    // Head follows mouse/camera slightly but stays mostly rigid
+    if (headRef.current) {
+      // Subtle idle sway
+      headRef.current.rotation.y = Math.sin(time * 0.2) * 0.05;
+    }
 
-    // Talking Animation: Rapid jaw/head movement
+    // Talking Animation: Sharp, disciplined jaw/head movement
     if (isTalking) {
-      // Shake head slightly when talking for emphasis
-      const talkIntensity = Math.sin(time * 20) * 0.05;
+      const talkIntensity = Math.sin(time * 25) * 0.03; // Faster, smaller movements
       if (headRef.current) {
         headRef.current.rotation.x = talkIntensity;
-      } else {
-        // Fallback if bone not found
-        avatarRef.current.rotation.x = talkIntensity;
       }
     } else {
-      // Reset head rotation
+      // Snap back to attention
       if (headRef.current) {
-        headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, 0, 0.1);
+        headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, 0, 0.2);
       }
     }
   });
 
   return (
     <group ref={avatarRef} dispose={null}>
-      <primitive object={scene} scale={2} position={[0, -2, 0]} />
+      {/* Scale up slightly and position lower for "Zoomed In" feel */}
+      <primitive object={scene} scale={2.2} position={[0, -1.8, 0]} />
     </group>
   );
 };

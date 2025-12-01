@@ -63,15 +63,20 @@ const ChatYourDevils: React.FC = () => {
     <div className="flex flex-col h-screen bg-black text-white overflow-hidden">
       {/* 3D Scene Area */}
       <div className="flex-1 relative">
-        <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
-          <ambientLight intensity={0.5} />
+        <Canvas camera={{ position: [0, 0.5, 2.5], fov: 45 }}>
+          <ambientLight intensity={0.6} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
           <Environment preset="city" />
           
           <Avatar isTalking={isTalking} />
           
           <ContactShadows position={[0, -1.5, 0]} opacity={0.5} scale={10} blur={2.5} far={4} />
-          <OrbitControls enableZoom={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2} />
+          <OrbitControls 
+            enableZoom={false} 
+            minPolarAngle={Math.PI / 2.2} 
+            maxPolarAngle={Math.PI / 1.8}
+            target={[0, 0.5, 0]} 
+          />
         </Canvas>
 
         {/* Overlay Controls */}
