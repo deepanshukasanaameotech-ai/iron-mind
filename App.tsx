@@ -7,6 +7,7 @@ import { Identity } from './pages/Identity';
 import { Performance } from './pages/Performance';
 import { Focus } from './pages/Focus';
 import { Auth } from './pages/Auth';
+import { Wisdom } from './pages/Wisdom';
 import { Screen } from './types';
 import { Button } from './components/UIComponents';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -157,6 +158,7 @@ function AppContent() {
         {screen === 'IDENTITY' && <Identity />}
         {screen === 'PERFORMANCE' && <Performance />}
         {screen === 'FOCUS' && <Focus />}
+        {screen === 'WISDOM' && <Wisdom />}
         
         {/* Simple Pro Trigger for Demo */}
         {!user?.isPro && screen !== 'AUTH' && (

@@ -43,6 +43,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, setScre
           <NavItem screen="IDENTITY" label="Identity Map" icon="🆔" />
           <NavItem screen="PERFORMANCE" label="Performance" icon="📈" />
           <NavItem screen="FOCUS" label="Deep Work" icon="⏱️" />
+          <NavItem screen="WISDOM" label="Daily Wisdom" icon="📜" />
         </nav>
 
         <div className="p-4 border-t border-neutral-900">
@@ -75,6 +76,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, setScre
              <NavItem screen="PILLARS" label="Life Pillars" icon="🏛️" />
              <NavItem screen="PERFORMANCE" label="Performance" icon="📈" />
              <NavItem screen="FOCUS" label="Deep Work" icon="⏱️" />
+             <NavItem screen="WISDOM" label="Daily Wisdom" icon="📜" />
              <div className="h-px bg-neutral-900 my-4" />
              <Button variant="outline" onClick={onLogout}>Logout</Button>
           </nav>
