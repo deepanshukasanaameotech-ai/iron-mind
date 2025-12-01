@@ -3,8 +3,9 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
 import { Avatar } from '../components/Avatar';
 import { chatWithGoggins } from '../services/aiService';
-import { speakWithFish } from '../services/fishAudioService';
-import { Send, Mic, MicOff, Volume2, VolumeX, Settings } from 'lucide-react';
+
+import { speakWithPiper, initPiper } from '../services/piperService';
+import { Send, Mic, MicOff, Volume2, VolumeX, Download } from 'lucide-react';
 
 const ChatYourDevils: React.FC = () => {
   const [input, setInput] = useState('');
@@ -14,29 +15,28 @@ const ChatYourDevils: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  // Hardcoded defaults from user request for immediate functionality
-  const [fishApiKey, setFishApiKey] = useState(localStorage.getItem('fish_api_key') || '5d1eb14dda1846419fd1f38300616468');
-  // Updated Reference ID from user's working curl command
-  const [fishRefId, setFishRefId] = useState(localStorage.getItem('fish_ref_id') || '8ef4a238714b45718ce04243307c57a7');
+
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [isModelReady, setIsModelReady] = useState(false);
   const synth = window.speechSynthesis;
 
-  const saveSettings = () => {
-    localStorage.setItem('fish_api_key', fishApiKey);
-    localStorage.setItem('fish_ref_id', fishRefId);
-    setShowSettings(false);
-  };
+  useEffect(() => {
+    // Initialize Piper on mount
+    initPiper((progress) => {
+      setDownloadProgress(progress);
+      if (progress >= 100) setIsModelReady(true);
+    }).then(() => setIsModelReady(true))
+      .catch(err => console.error("Piper init failed:", err));
+  }, []);
 
   const speak = async (text: string) => {
     if (isMuted) return;
     
-    // Try Fish Audio first if keys exist
-    if (fishApiKey && fishRefId) {
+    // Try Piper TTS first
+    if (isModelReady) {
       try {
-        const audioData = await speakWithFish(text, fishApiKey, fishRefId);
-        const blob = new Blob([audioData], { type: 'audio/mp3' });
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
+        const audioUrl = await speakWithPiper(text);
+        const audio = new Audio(audioUrl);
         
         audio.onplay = () => setIsTalking(true);
         audio.onended = () => setIsTalking(false);
@@ -45,8 +45,7 @@ const ChatYourDevils: React.FC = () => {
         await audio.play();
         return;
       } catch (err) {
-        console.error("Fish Audio failed, falling back to browser TTS. Error details:", err);
-        // Optional: Alert user for debugging if needed, or just log
+        console.error("Piper TTS failed, falling back to browser TTS:", err);
       }
     }
 
@@ -107,13 +106,13 @@ const ChatYourDevils: React.FC = () => {
         </Canvas>
 
         {/* Overlay Controls */}
-        <div className="absolute top-4 right-4 z-10 flex gap-2">
-          <button 
-            onClick={() => setShowSettings(!showSettings)}
-            className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors"
-          >
-            <Settings size={24} />
-          </button>
+        <div className="absolute top-4 right-4 z-10 flex gap-2 items-center">
+          {!isModelReady && (
+            <div className="bg-black/50 px-3 py-1 rounded-full text-xs text-blue-400 flex items-center gap-2">
+              <Download size={12} />
+              {downloadProgress > 0 ? `${Math.round(downloadProgress)}%` : 'Loading Voice...'}
+            </div>
+          )}
           <button 
             onClick={() => setIsMuted(!isMuted)}
             className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors"
@@ -121,46 +120,6 @@ const ChatYourDevils: React.FC = () => {
             {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
           </button>
         </div>
-
-        {/* Settings Modal */}
-        {showSettings && (
-          <div className="absolute inset-0 z-20 bg-black/80 flex items-center justify-center p-4">
-            <div className="bg-gray-900 p-6 rounded-xl border border-gray-700 max-w-md w-full">
-              <h3 className="text-xl font-bold mb-4">Voice Settings (Fish Audio)</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs text-gray-400 mb-1">Fish Audio API Key</label>
-                  <input 
-                    type="password" 
-                    value={fishApiKey}
-                    onChange={(e) => setFishApiKey(e.target.value)}
-                    className="w-full bg-black border border-gray-700 rounded p-2 text-sm"
-                    placeholder="Enter your API Key"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-400 mb-1">Voice Reference ID</label>
-                  <input 
-                    type="text" 
-                    value={fishRefId}
-                    onChange={(e) => setFishRefId(e.target.value)}
-                    className="w-full bg-black border border-gray-700 rounded p-2 text-sm"
-                    placeholder="Enter Voice Model ID"
-                  />
-                  <p className="text-[10px] text-gray-500 mt-1">
-                    Sign up at <a href="https://fish.audio" target="_blank" className="text-blue-400 underline">fish.audio</a> to get these.
-                  </p>
-                </div>
-                <button 
-                  onClick={saveSettings}
-                  className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded font-bold"
-                >
-                  Save & Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Chat Interface */}
