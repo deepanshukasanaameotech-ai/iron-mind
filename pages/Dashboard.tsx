@@ -7,8 +7,66 @@ export const Dashboard: React.FC = () => {
   const { battleLog, updateBattleLog, loading } = useData();
   const [loadingAi, setLoadingAi] = useState(false);
 
+  const [quote] = useState(() => {
+    const quotes = [
+      "THEY DON'T KNOW ME SON!",
+      "WHO'S GONNA CARRY THE BOATS?",
+      "STAY HARD!",
+      "I DON'T STOP WHEN I'M TIRED, I STOP WHEN I'M DONE.",
+      "CALLUS YOUR MIND.",
+      "NOBODY CARES. WORK HARDER.",
+      "THE ONLY EASY DAY WAS YESTERDAY."
+    ];
+    return quotes[Math.floor(Math.random() * quotes.length)];
+  });
+
   if (loading || !battleLog) {
-    return <div className="text-white">Loading Battle Log...</div>;
+    return (
+      <div className="space-y-6 animate-pulse">
+        {/* Header Skeleton */}
+        <div className="flex justify-between items-end">
+          <div>
+            <div className="h-8 w-48 bg-neutral-800 rounded mb-2"></div>
+            <div className="h-4 w-32 bg-neutral-900 rounded"></div>
+          </div>
+          <div className="text-right">
+            <div className="h-3 w-24 bg-neutral-900 rounded mb-1 ml-auto"></div>
+            <div className="h-10 w-32 bg-neutral-800 rounded ml-auto"></div>
+          </div>
+        </div>
+
+        {/* Content Skeleton */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Mission Parameters Skeleton */}
+          <div className="bg-neutral-950 border border-neutral-800 p-6 space-y-4">
+            <div className="h-6 w-40 bg-neutral-800 rounded mb-6"></div>
+            {[1, 2, 3].map(i => (
+              <div key={i}>
+                <div className="h-3 w-20 bg-neutral-900 rounded mb-2"></div>
+                <div className="h-10 w-full bg-neutral-900 rounded"></div>
+              </div>
+            ))}
+          </div>
+
+          {/* Execution Status Skeleton */}
+          <div className="bg-neutral-950 border border-neutral-800 p-6 flex flex-col justify-between">
+            <div className="h-6 w-40 bg-neutral-800 rounded mb-6"></div>
+            <div className="flex items-center justify-between bg-neutral-900 p-4 border border-neutral-800 h-20">
+              <div className="h-4 w-32 bg-neutral-800 rounded"></div>
+              <div className="h-12 w-12 bg-neutral-800 rounded"></div>
+            </div>
+            
+            <div className="mt-6 flex-1 flex flex-col justify-end">
+               {/* Quote Overlay */}
+               <div className="text-center space-y-2 py-8">
+                  <p className="text-emerald-500 font-mono text-xs uppercase tracking-widest">Loading Battle Log...</p>
+                  <p className="text-xl font-black italic text-neutral-600 uppercase max-w-xs mx-auto">"{quote}"</p>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const handleAiRoast = async () => {
