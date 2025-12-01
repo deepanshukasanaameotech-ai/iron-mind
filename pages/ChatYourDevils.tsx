@@ -17,7 +17,8 @@ const ChatYourDevils: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   // Hardcoded defaults from user request for immediate functionality
   const [fishApiKey, setFishApiKey] = useState(localStorage.getItem('fish_api_key') || '5d1eb14dda1846419fd1f38300616468');
-  const [fishRefId, setFishRefId] = useState(localStorage.getItem('fish_ref_id') || 'ff5468d06c2443dba9b8d2f9c6aa26b0');
+  // Updated Reference ID from user's working curl command
+  const [fishRefId, setFishRefId] = useState(localStorage.getItem('fish_ref_id') || '8ef4a238714b45718ce04243307c57a7');
   const synth = window.speechSynthesis;
 
   const saveSettings = () => {
@@ -44,7 +45,8 @@ const ChatYourDevils: React.FC = () => {
         await audio.play();
         return;
       } catch (err) {
-        console.error("Fish Audio failed, falling back to browser TTS:", err);
+        console.error("Fish Audio failed, falling back to browser TTS. Error details:", err);
+        // Optional: Alert user for debugging if needed, or just log
       }
     }
 

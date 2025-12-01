@@ -16,12 +16,14 @@ export const speakWithFish = async (
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      // User provided curl command has this header
+      "model": "s1"
     },
     body: JSON.stringify({
       text: text,
       reference_id: referenceId,
       format: "mp3",
-      mp3_bitrate: 128,
+      normalize: true,
       latency: "normal"
     }),
   });
