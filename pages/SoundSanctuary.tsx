@@ -28,21 +28,21 @@ const SOUNDS: Sound[] = [
     id: 'fire',
     name: 'Crackling Fire',
     icon: Flame,
-    url: 'https://actions.google.com/sounds/v1/ambiences/fireplace.ogg',
+    url: 'https://actions.google.com/sounds/v1/ambiences/fire.ogg',
     color: 'text-orange-500'
   },
   {
     id: 'birds',
     name: 'Forest Birds',
     icon: Bird,
-    url: 'https://actions.google.com/sounds/v1/ambiences/forest_morning.ogg',
+    url: 'https://actions.google.com/sounds/v1/animals/woodpecker_eating_distant.ogg',
     color: 'text-green-400'
   },
   {
     id: 'night',
     name: 'Night Crickets',
     icon: Moon,
-    url: 'https://actions.google.com/sounds/v1/ambiences/outdoor_camping.ogg',
+    url: 'https://actions.google.com/sounds/v1/animals/afternoon_crickets_long.ogg',
     color: 'text-indigo-400'
   },
   {
