@@ -87,4 +87,4 @@ export interface PullupLog {
   maxSet: number;
 }
 
-export type Screen = 'DASHBOARD' | 'HABITS' | 'PILLARS' | 'IDENTITY' | 'PERFORMANCE' | 'FOCUS' | 'WISDOM' | 'AUTH';
+export type Screen = 'DASHBOARD' | 'HABITS' | 'PILLARS' | 'IDENTITY' | 'PERFORMANCE' | 'FOCUS' | 'WISDOM' | 'MOTIVATION' | 'AUTH';
