@@ -10,6 +10,7 @@ import { Auth } from './pages/Auth';
 import { Wisdom } from './pages/Wisdom';
 import { Motivation } from './pages/Motivation';
 import ChatYourDevils from './pages/ChatYourDevils';
+import SoundSanctuary from './pages/SoundSanctuary';
 import { Screen } from './types';
 import { Button } from './components/UIComponents';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
