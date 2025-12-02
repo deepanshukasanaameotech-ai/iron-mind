@@ -78,23 +78,23 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   const updateBattleLog = async (log: BattleLog) => {
-    await dataService.saveBattleLog(log);
     setBattleLog(log);
+    await dataService.saveBattleLog(log);
   };
 
   const updateHabits = async (newHabits: Habit[]) => {
-    await dataService.saveHabits(newHabits);
     setHabits(newHabits);
+    await dataService.saveHabits(newHabits);
   };
 
   const updatePillars = async (newPillars: PillarData[]) => {
-    await dataService.savePillars(newPillars);
     setPillars(newPillars);
+    await dataService.savePillars(newPillars);
   };
 
   const updateIdentity = async (data: IdentityData) => {
-    await dataService.saveIdentity(data);
     setIdentity(data);
+    await dataService.saveIdentity(data);
   };
 
   const addRun = async (run: RunLog) => {
