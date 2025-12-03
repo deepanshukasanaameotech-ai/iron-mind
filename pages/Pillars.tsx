@@ -41,8 +41,9 @@ export const Pillars: React.FC = () => {
                 fill="#8884d8"
                 paddingAngle={5}
                 dataKey="score"
+                nameKey="name"
                 stroke="none"
-                label={({ name, score }) => `${name}: ${score}%`}
+                label={({ name, value }) => `${name}: ${value}%`}
                 labelLine={{ stroke: '#555', strokeWidth: 1 }}
               >
                 {pillars.map((entry, index) => (

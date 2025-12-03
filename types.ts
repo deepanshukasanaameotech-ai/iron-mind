@@ -47,6 +47,7 @@ export interface PillarData {
   name: string;
   score: number; // 0-100
   notes: string;
+  [key: string]: any;
 }
 // Alias for backward compatibility if needed, or just use PillarData everywhere
 export type Pillar = PillarData;
